@@ -1,0 +1,45 @@
+{
+  "name": "MDE: Defense Evasion via Bun Executable in Temporary Directories",
+  "description": "Detecta la ejecución del intérprete de Bun o comandos 'bun run' originados o apuntando a directorios temporales (como /tmp/ o /temp/). Los atacantes utilizan binarios standalone no estándar en ubicaciones de escritura pública para evadir el monitoreo de runtimes tradicionales como Node.js y ejecutar scripts maliciosos.",
+  "tags": [
+    "endpoint_security",
+    "mde",
+    "kql",
+    "defense_evasion",
+    "execution",
+    "bun_runtime",
+    "malware_behavior",
+    "T1027",
+    "T1036"
+  ],
+  "prompts": [
+    {
+      "id": "1",
+      "prompt": "¡EVASIÓN DE DEFENSAS: Runtime Bun detectado en directorio temporal! Se ha registrado la ejecución de Bun en el dispositivo **{DeviceName}** bajo la cuenta **{AccountName}**. Línea de comandos: **{ProcessCommandLine}**. Bajo la técnica de **Obfuscated Files or Information** (**MITRE ATT&CK T1027**), esto indica un intento de ejecución evadiendo los controles estándar de Node.js.",
+      "continueOnError": false,
+      "systemCapability": "analyzeEndpointEvent"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "DeviceName",
+      "required": true,
+      "description": "El nombre del host afectado reportado por MDE."
+    },
+    {
+      "name": "AccountName",
+      "required": true,
+      "description": "El contexto de usuario que ejecutó el proceso."
+    },
+    {
+      "name": "ProcessCommandLine",
+      "required": true,
+      "description": "La línea de comandos completa del proceso sospechoso."
+    },
+    {
+      "name": "InitiatingProcessCommandLine",
+      "required": false,
+      "description": "El comando que originó la descarga o ejecución de Bun."
+    }
+  ]
+}

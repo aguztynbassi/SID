@@ -1,0 +1,46 @@
+{
+  "name": "MDE: Anti-Forensic Data Destruction via Shred Utility",
+  "description": "Detecta la ejecución de la utilidad nativa 'shred' apuntando a archivos del sistema críticos (como registros de autenticación o directorios de configuración) o utilizando parámetros de eliminación irreversible (-uvz). Esto suele indicar una rutina destructiva automatizada o una acción de borrado de huellas por parte de un atacante antes de abandonar el sistema.",
+  "tags": [
+    "endpoint_security",
+    "mde",
+    "kql",
+    "impact",
+    "defense_evasion",
+    "anti_forensics",
+    "data_destruction",
+    "wiper",
+    "T1485",
+    "T1070.004"
+  ],
+  "prompts": [
+    {
+      "id": "1",
+      "prompt": "¡ALERTA CRÍTICA: Destrucción de evidencia activa! Se ha detectado la ejecución del comando destructivo `shred` en el dispositivo **{DeviceName}** bajo la cuenta **{AccountName}**. Línea de comandos: **{ProcessCommandLine}**. Bajo la técnica de **Data Destruction** o **Indicator Removal** (**MITRE ATT&CK T1485/T1070**), esto indica un intento inminente de cegar al SOC y sabotear el análisis forense.",
+      "continueOnError": false,
+      "systemCapability": "analyzeEndpointEvent"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "DeviceName",
+      "required": true,
+      "description": "El nombre del host afectado donde se ejecuta el borrado."
+    },
+    {
+      "name": "AccountName",
+      "required": true,
+      "description": "La cuenta de usuario o proceso que invocó el comando shred (ej. root)."
+    },
+    {
+      "name": "ProcessCommandLine",
+      "required": true,
+      "description": "La línea de comandos completa con los flags destructivos y los archivos objetivo."
+    },
+    {
+      "name": "InitiatingProcessFileName",
+      "required": false,
+      "description": "El proceso padre o el script que disparó la rutina destructiva."
+    }
+  ]
+}

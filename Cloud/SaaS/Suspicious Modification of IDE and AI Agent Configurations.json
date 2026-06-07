@@ -1,0 +1,46 @@
+{
+  "name": "MDE: Suspicious Modification of IDE and AI Agent Configurations",
+  "description": "Detecta la creación o modificación de archivos de configuración críticos de VS Code, Cursor, Claude o Gemini realizados por intérpretes de comandos (sh, bash) o runtimes de JavaScript (Node, Bun). Esto suele indicar un intento de persistencia mediante tareas automáticas del IDE o manipulación del comportamiento de los asistentes de IA.",
+  "tags": [
+    "endpoint_security",
+    "mde",
+    "kql",
+    "persistence",
+    "defense_evasion",
+    "ai_security",
+    "vscode",
+    "cursor",
+    "T1546.004",
+    "T1059"
+  ],
+  "prompts": [
+    {
+      "id": "1",
+      "prompt": "¡MANIPULACIÓN DE IDE/AGENTE DE IA! Se detectó una acción de tipo **{ActionType}** sobre el archivo de configuración **{FileName}** en la ruta **{FolderPath}**. La modificación fue iniciada por **{InitiatingProcessFileName}**. Bajo la técnica de **Event Triggered Execution: RFC Compliance** o manipulación de extensiones (**MITRE ATT&CK T1546**), esto representa un riesgo de persistencia o envenenamiento de código asistido.",
+      "continueOnError": false,
+      "systemCapability": "analyzeEndpointEvent"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "DeviceName",
+      "required": true,
+      "description": "Nombre del equipo de desarrollo afectado."
+    },
+    {
+      "name": "ActionType",
+      "required": true,
+      "description": "Tipo de acción registrada sobre el archivo (FileCreated, FileModified)."
+    },
+    {
+      "name": "FileName",
+      "required": true,
+      "description": "El archivo de configuración modificado."
+    },
+    {
+      "name": "FolderPath",
+      "required": true,
+      "description": "La ruta del directorio de configuración afectado."
+    }
+  ]
+}
