@@ -1,0 +1,45 @@
+{
+  "name": "MDE: CI/CD Runner Memory Scraping via Sudo Python3 against Proc File System",
+  "description": "Detecta intentos de volcado o raspado de memoria en runners de CI/CD mediante la ejecución de scripts de Python3 con privilegios elevados (sudo) apuntando al sistema de archivos /proc y su estructura de memoria (/mem). Este comportamiento indica un intento de exfiltración de secretos enmascarados de variables de pipeline.",
+  "tags": [
+    "endpoint_security",
+    "mde",
+    "kql",
+    "credential_access",
+    "memory_scraping",
+    "cicd_security",
+    "devsecops",
+    "T1003",
+    "T1068"
+  ],
+  "prompts": [
+    {
+      "id": "1",
+      "prompt": "¡CRÍTICO: Raspado de memoria en Runner de CI/CD! Se ha detectado la ejecución de un proceso de Python con sudo accediendo a la memoria de procesos en `/proc` en el dispositivo **{DeviceName}**. Línea de comandos: **{ProcessCommandLine}**. Bajo la técnica de **OS Credential Dumping** (**MITRE ATT&CK T1003**), esto representa un intento inminente de robo de credenciales en el pipeline.",
+      "continueOnError": false,
+      "systemCapability": "analyzeEndpointEvent"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "DeviceName",
+      "required": true,
+      "description": "El nombre del runner o máquina virtual afectada."
+    },
+    {
+      "name": "AccountName",
+      "required": true,
+      "description": "La cuenta de usuario que invocó el comando (ej. runner, ubuntu)."
+    },
+    {
+      "name": "ProcessCommandLine",
+      "required": true,
+      "description": "La línea de comandos completa que ejecuta el raspado de memoria."
+    },
+    {
+      "name": "InitiatingProcessCommandLine",
+      "required": false,
+      "description": "El proceso padre o el paso del pipeline que originó el script."
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "name": "CloudTrail: Lateral Movement via SSM SendCommand Abuse",
+  "description": "Detecta la ejecución de comandos remotos a través de AWS Systems Manager (SendCommand). Este comportamiento es consistente con actores de amenaza o variantes de malware (como Miasma/durabletask) que utilizan las credenciales de un recurso comprometido para propagarse lateralmente hacia otras instancias EC2 del ecosistema.",
+  "tags": [
+    "cloud_security",
+    "aws",
+    "cloudtrail",
+    "lateral_movement",
+    "ssm",
+    "miasma",
+    "T1021.002",
+    "defense_evasion"
+  ],
+  "prompts": [
+    {
+      "id": "1",
+      "prompt": "¡MOVIMIENTO LATERAL VIA SSM! Se ha detectado la ejecución del evento **SendCommand** en el servicio SSM desde la IP **{sourceIPAddress}**. El actor **{actor_arn}** intentó ejecutar el documento **{ssm_document}** apuntando a las instancias **{target_instance_id}**. Bajo la técnica de **Remote Services: SSH/Remote Services** (**MITRE ATT&CK T1021.002**), esto indica un intento de propagación interna.",
+      "continueOnError": false,
+      "systemCapability": "analyzeCloudTrailEvent"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "target_instance_id",
+      "required": true,
+      "description": "El ID o lista de IDs de las instancias EC2 objetivo del comando."
+    },
+    {
+      "name": "ssm_document",
+      "required": true,
+      "description": "El documento de SSM utilizado para ejecutar el código (ej. AWS-RunShellScript)."
+    },
+    {
+      "name": "actor_arn",
+      "required": true,
+      "description": "El ARN de la identidad de IAM (Rol adjunto o llave comprometida) que ejecutó la API."
+    },
+    {
+      "name": "sourceIPAddress",
+      "required": true,
+      "description": "La dirección IP de origen de la llamada de API."
+    }
+  ]
+}
